@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucis AI Health Suite | Preventive Health Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg-primary: #0c0f14;
+      --bg-secondary: #131820;
+      --bg-tertiary: #1a2029;
+      --bg-card: #1e2632;
+      --bg-elevated: #242d3a;
+      
+      --accent-primary: #10b981;
+      --accent-secondary: #059669;
+      --accent-teal: #14b8a6;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-rose: #f43f5e;
+      --accent-cyan: #06b6d4;
+      
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-dim: #475569;
+      
+      --border: #2d3748;
+      --border-light: #3d4a5c;
+      
+      --gradient-health: linear-gradient(135deg, #10b981, #14b8a6, #06b6d4);
+      --gradient-warm: linear-gradient(135deg, #f59e0b, #f97316);
+      --gradient-alert: linear-gradient(135deg, #ef4444, #f43f5e);
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-primary);
+      font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Background Effects */
+    .bg-effects {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.4;
+    }
+
+    .bg-orb-1 {
+      width: 600px;
+      height: 600px;
+      top: -200px;
+      left: -150px;
+      background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%);
+    }
+
+    .bg-orb-2 {
+      width: 500px;
+      height: 500px;
+      bottom: -150px;
+      right: -100px;
+      background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%);
+    }
+
+    .bg-orb-3 {
+      width: 400px;
+      height: 400px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+    }
+
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Header */
+    .header {
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 100;
+      background: rgba(12,15,20,0.92);
+      backdrop-filter: blur(20px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--gradient-health);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 20px rgba(16,185,129,0.35);
+      position: relative;
+    }
+
+    .logo-icon::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 14px;
+      background: var(--gradient-health);
+      z-index: -1;
+      opacity: 0.4;
+      filter: blur(8px);
+    }
+
+    .logo-text-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: var(--gradient-health);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 600;
+    }
+
+    /* Navigation */
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--bg-secondary);
+      padding: 5px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-tab {
+      padding: 10px 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
+    .nav-tab.active {
+      background: var(--gradient-health);
+      color: var(--bg-primary);
+      box-shadow: 0 4px 15px rgba(16,185,129,0.35);
+    }
+
+    .nav-tab-icon {
+      font-size: 16px;
+    }
+
+    .header-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: 100px;
+      font-size: 11px;
+      color: var(--accent-primary);
+      font-weight: 600;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 10px var(--accent-primary);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    /* Main */
+    .main {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Demo Panels */
+    .demo-panel {
+      display: none;
+      animation: fadeSlideIn 0.4s ease;
+    }
+
+    .demo-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Section */
+    .demo-hero {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 18px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 11px;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .demo-title {
+      font-size: 44px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 14px;
+      line-height: 1.1;
+    }
+
+    .demo-title .highlight {
+      background: var(--gradient-health);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .demo-subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .card-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .card-body {
+      padding: 22px;
+    }
+
+    /* Status Badge */
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: "JetBrains Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-badge.ready {
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: var(--accent-primary);
+    }
+
+    .status-badge.processing {
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.3);
+      color: var(--accent-amber);
+    }
+
+    .status-badge.alert {
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: var(--accent-red);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* ====================
+       BIOMARKER ANALYZER
+       ==================== */
+    .analyzer-grid {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 24px;
+    }
+
+    /* Blood Panel Input */
+    .panel-input-area {
+      min-height: 320px;
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(16,185,129,0.15);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .biomarker-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .biomarker-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      transition: all 0.25s ease;
+    }
+
+    .biomarker-item:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .biomarker-item.flagged {
+      border-color: var(--accent-red);
+      background: rgba(239,68,68,0.05);
+    }
+
+    .biomarker-item.optimal {
+      border-color: var(--accent-primary);
+      background: rgba(16,185,129,0.05);
+    }
+
+    .biomarker-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .biomarker-value-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .biomarker-value {
+      font-size: 22px;
+      font-weight: 800;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .biomarker-unit {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .biomarker-range {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 6px;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .biomarker-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .biomarker-status.high {
+      background: rgba(239,68,68,0.15);
+      color: var(--accent-red);
+    }
+
+    .biomarker-status.low {
+      background: rgba(245,158,11,0.15);
+      color: var(--accent-amber);
+    }
+
+    .biomarker-status.optimal {
+      background: rgba(16,185,129,0.15);
+      color: var(--accent-primary);
+    }
+
+    /* Analysis Results */
+    .analysis-results {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .health-score-card {
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .score-ring-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 18px;
+    }
+
+    .score-ring-container svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .score-ring-bg {
+      fill: none;
+      stroke: var(--bg-card);
+      stroke-width: 14;
+    }
+
+    .score-ring-fill {
+      fill: none;
+      stroke-width: 14;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1.2s ease, stroke 0.5s ease;
+    }
+
+    .score-ring-fill.excellent { stroke: url(#healthGradient); }
+    .score-ring-fill.good { stroke: var(--accent-teal); }
+    .score-ring-fill.moderate { stroke: var(--accent-amber); }
+    .score-ring-fill.attention { stroke: var(--accent-red); }
+
+    .score-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-number {
+      font-size: 44px;
+      font-weight: 800;
+      font-family: "JetBrains Mono", monospace;
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+
+    .score-category {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .score-category.excellent { color: var(--accent-primary); }
+    .score-category.good { color: var(--accent-teal); }
+    .score-category.moderate { color: var(--accent-amber); }
+    .score-category.attention { color: var(--accent-red); }
+
+    .score-summary {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Insights List */
+    .insights-card {
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid var(--border);
+    }
+
+    .insights-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .insights-title {
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .insight-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-card);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border-left: 3px solid var(--border);
+      transition: all 0.25s ease;
+    }
+
+    .insight-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .insight-item.critical {
+      border-left-color: var(--accent-red);
+      background: rgba(239,68,68,0.05);
+    }
+
+    .insight-item.warning {
+      border-left-color: var(--accent-amber);
+      background: rgba(245,158,11,0.05);
+    }
+
+    .insight-item.positive {
+      border-left-color: var(--accent-primary);
+      background: rgba(16,185,129,0.05);
+    }
+
+    .insight-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .insight-icon.critical { background: rgba(239,68,68,0.15); }
+    .insight-icon.warning { background: rgba(245,158,11,0.15); }
+    .insight-icon.positive { background: rgba(16,185,129,0.15); }
+
+    .insight-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .insight-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .insight-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .insight-citation {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      color: var(--accent-cyan);
+      margin-top: 6px;
+      padding: 3px 8px;
+      background: rgba(6,182,212,0.1);
+      border-radius: 4px;
+      font-family: "JetBrains Mono", monospace;
+      cursor: pointer;
+    }
+
+    .insight-citation:hover {
+      background: rgba(6,182,212,0.2);
+    }
+
+    /* ====================
+       PROTOCOL GENERATOR
+       ==================== */
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .profile-section {
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-avatar {
+      width: 56px;
+      height: 56px;
+      background: var(--gradient-health);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .profile-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .profile-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .profile-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .profile-tag {
+      padding: 6px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .profile-tag .tag-icon {
+      font-size: 14px;
+    }
+
+    .goals-section {
+      margin-top: 20px;
+    }
+
+    .goals-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .goal-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-card);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .goal-item:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .goal-item.selected {
+      border-color: var(--accent-primary);
+      background: rgba(16,185,129,0.08);
+    }
+
+    .goal-checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .goal-item.selected .goal-checkbox {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .goal-text {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Protocol Preview */
+    .protocol-preview {
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .protocol-header {
+      padding: 20px;
+      background: var(--gradient-health);
+      color: var(--bg-primary);
+    }
+
+    .protocol-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .protocol-subtitle {
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .protocol-body {
+      padding: 20px;
+    }
+
+    .protocol-section {
+      margin-bottom: 20px;
+    }
+
+    .protocol-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .protocol-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .protocol-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px;
+      background: var(--bg-card);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .protocol-item-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .protocol-item-icon.supplement { background: rgba(139,92,246,0.15); }
+    .protocol-item-icon.nutrition { background: rgba(16,185,129,0.15); }
+    .protocol-item-icon.lifestyle { background: rgba(59,130,246,0.15); }
+    .protocol-item-icon.monitoring { background: rgba(6,182,212,0.15); }
+
+    .protocol-item-content {
+      flex: 1;
+    }
+
+    .protocol-item-name {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .protocol-item-detail {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .protocol-item-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .protocol-meta-tag {
+      font-size: 9px;
+      padding: 3px 8px;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .protocol-evidence {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      color: var(--accent-cyan);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .protocol-cta {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ====================
+       HEALTH INSIGHTS HUB
+       ==================== */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .data-source-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.25s ease;
+    }
+
+    .data-source-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+
+    .data-source-card.connected {
+      border-color: rgba(16,185,129,0.4);
+    }
+
+    .data-source-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .data-source-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .data-source-icon.labs { background: rgba(239,68,68,0.15); }
+    .data-source-icon.wearable { background: rgba(59,130,246,0.15); }
+    .data-source-icon.sleep { background: rgba(139,92,246,0.15); }
+
+    .data-source-status {
+      font-size: 9px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .data-source-status.connected {
+      background: rgba(16,185,129,0.15);
+      color: var(--accent-primary);
+    }
+
+    .data-source-status.pending {
+      background: rgba(245,158,11,0.15);
+      color: var(--accent-amber);
+    }
+
+    .data-source-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .data-source-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .data-source-metrics {
+      display: flex;
+      gap: 16px;
+    }
+
+    .metric-mini {
+      flex: 1;
+    }
+
+    .metric-mini-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .metric-mini-value {
+      font-size: 18px;
+      font-weight: 800;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    /* Correlation Panel */
+    .correlation-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .correlation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .correlation-title {
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .correlation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .correlation-item {
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid var(--border);
+    }
+
+    .correlation-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .correlation-badge {
+      font-size: 9px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .correlation-badge.strong {
+      background: rgba(16,185,129,0.15);
+      color: var(--accent-primary);
+    }
+
+    .correlation-badge.moderate {
+      background: rgba(245,158,11,0.15);
+      color: var(--accent-amber);
+    }
+
+    .correlation-item-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .correlation-item-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .correlation-visual {
+      margin-top: 14px;
+      height: 60px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .correlation-line {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      height: 40px;
+    }
+
+    /* Sample Selector */
+    .samples-section {
+      margin-top: 28px;
+    }
+
+    .samples-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .samples-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .sample-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sample-card:hover {
+      border-color: var(--accent-primary);
+      background: rgba(16,185,129,0.03);
+    }
+
+    .sample-card.selected {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(16,185,129,0.25);
+      background: rgba(16,185,129,0.05);
+    }
+
+    .sample-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .sample-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .sample-type {
+      font-size: 9px;
+      padding: 4px 10px;
+      background: rgba(139,92,246,0.15);
+      color: var(--accent-purple);
+      border-radius: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .sample-meta {
+      display: flex;
+      gap: 14px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .sample-meta span {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 28px;
+      padding: 20px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      border-color: var(--accent-primary);
+      background: rgba(16,185,129,0.08);
+    }
+
+    .btn.primary {
+      background: var(--gradient-health);
+      border: none;
+      color: var(--bg-primary);
+      font-weight: 700;
+    }
+
+    .btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 36px;
+      color: var(--text-muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+
+    .footer-highlight {
+      background: var(--gradient-health);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-overlay.visible {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      max-width: 520px;
+      width: 100%;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-actions {
+      padding: 18px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* Citation Modal */
+    .citation-content {
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .citation-source {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--accent-cyan);
+    }
+
+    .citation-authors {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .citation-abstract {
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    .citation-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .citation-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .analyzer-grid,
+      .protocol-grid {
+        grid-template-columns: 1fr;
+      }
+      .hub-grid {
+        grid-template-columns: 1fr;
+      }
+      .correlation-grid {
+        grid-template-columns: 1fr;
+      }
+      .samples-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+      }
+      .nav-tabs {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .samples-grid {
+        grid-template-columns: 1fr;
+      }
+      .demo-title {
+        font-size: 32px;
+      }
+      .biomarker-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG Gradients -->
+  <svg width="0" height="0">
+    <defs>
+      <linearGradient id="healthGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#10b981"/>
+        <stop offset="50%" stop-color="#14b8a6"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="bg-effects">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">🧬</div>
+      <div class="logo-text-group">
+        <div class="logo-text">Lucis AI</div>
+        <div class="logo-sub">Preventive Health Intelligence</div>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="nav-tab active" onclick="switchDemo('biomarker', this)">
+        <span class="nav-tab-icon">🔬</span>
+        Biomarker Analyzer
+      </button>
+      <button class="nav-tab" onclick="switchDemo('protocol', this)">
+        <span class="nav-tab-icon">📋</span>
+        Protocol Generator
+      </button>
+      <button class="nav-tab" onclick="switchDemo('hub', this)">
+        <span class="nav-tab-icon">📊</span>
+        Health Insights Hub
+      </button>
+    </nav>
+
+    <div class="header-badge">
+      <span class="pulse-dot"></span>
+      AI Demo
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- ====================
+         BIOMARKER ANALYZER
+         ==================== -->
+    <div class="demo-panel active" id="biomarker">
+      <div class="demo-hero">
+        <div class="demo-badge">🔬 Evidence-Based Analysis</div>
+        <h1 class="demo-title">Intelligent <span class="highlight">Biomarker Analyzer</span></h1>
+        <p class="demo-subtitle">AI-powered blood panel interpretation with evidence-based insights, clinical citations, and personalized health recommendations.</p>
+      </div>
+
+      <div class="analyzer-grid">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Blood Panel Results</span>
+            <div class="status-badge ready" id="bio-status">
+              <span class="status-dot"></span>
+              <span id="bio-status-text">Ready</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="panel-input-area">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <div class="panel-icon">🩸</div>
+                  Comprehensive Metabolic Panel
+                </div>
+                <span style="font-size: 11px; color: var(--text-muted);">12 biomarkers</span>
+              </div>
+              <div class="biomarker-grid" id="biomarker-grid">
+                <!-- Biomarkers populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">AI Analysis</span>
+          </div>
+          <div class="card-body">
+            <div class="analysis-results">
+              <div class="health-score-card">
+                <div class="score-ring-container">
+                  <svg viewBox="0 0 130 130">
+                    <circle class="score-ring-bg" cx="65" cy="65" r="54"></circle>
+                    <circle class="score-ring-fill excellent" id="health-score-ring" cx="65" cy="65" r="54" 
+                      stroke-dasharray="339" stroke-dashoffset="339"></circle>
+                  </svg>
+                  <div class="score-inner">
+                    <span class="score-number" id="health-score">--</span>
+                    <span class="score-label">Health Score</span>
+                  </div>
+                </div>
+                <div class="score-category excellent" id="score-category">--</div>
+                <div class="score-summary" id="score-summary">Run analysis to generate your personalized health score</div>
+              </div>
+
+              <div class="insights-card">
+                <div class="insights-header">
+                  <span class="insights-title">🧠 Key Insights</span>
+                </div>
+                <div id="insights-list">
+                  <div class="insight-item">
+                    <div class="insight-icon" style="background: var(--bg-card);">💡</div>
+                    <div class="insight-content">
+                      <div class="insight-title">Awaiting Analysis</div>
+                      <div class="insight-desc">Click "Analyze Panel" to generate AI-powered insights with clinical citations.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="samples-section">
+        <div class="samples-label">Sample Blood Panels</div>
+        <div class="samples-grid">
+          <div class="sample-card selected" onclick="selectBioSample(0, this)">
+            <div class="sample-header">
+              <span class="sample-name">Healthy Adult</span>
+              <span class="sample-type">Optimal</span>
+            </div>
+            <div class="sample-meta">
+              <span>Age: <span>32</span></span>
+              <span>Score: <span>~92</span></span>
+            </div>
+          </div>
+          <div class="sample-card" onclick="selectBioSample(1, this)">
+            <div class="sample-header">
+              <span class="sample-name">Pre-Diabetic</span>
+              <span class="sample-type">Attention</span>
+            </div>
+            <div class="sample-meta">
+              <span>Age: <span>45</span></span>
+              <span>Score: <span>~68</span></span>
+            </div>
+          </div>
+          <div class="sample-card" onclick="selectBioSample(2, this)">
+            <div class="sample-header">
+              <span class="sample-name">Iron Deficient</span>
+              <span class="sample-type">Warning</span>
+            </div>
+            <div class="sample-meta">
+              <span>Age: <span>28</span></span>
+              <span>Score: <span>~74</span></span>
+            </div>
+          </div>
+          <div class="sample-card" onclick="selectBioSample(3, this)">
+            <div class="sample-header">
+              <span class="sample-name">Athlete Profile</span>
+              <span class="sample-type">Optimal</span>
+            </div>
+            <div class="sample-meta">
+              <span>Age: <span>26</span></span>
+              <span>Score: <span>~95</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <button class="btn" onclick="randomBioSample()">🔀 Random Panel</button>
+          <button class="btn" onclick="showUploadModal()">📤 Upload Results</button>
+        </div>
+        <div class="control-group">
+          <button class="btn primary" id="analyze-bio-btn" onclick="analyzeBiomarkers()">⚡ Analyze Panel</button>
+          <button class="btn" id="export-bio-btn" onclick="exportAnalysis()" disabled>📄 Export Report</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================
+         PROTOCOL GENERATOR
+         ==================== -->
+    <div class="demo-panel" id="protocol">
+      <div class="demo-hero">
+        <div class="demo-badge">📋 Personalized Protocols</div>
+        <h1 class="demo-title">AI <span class="highlight">Protocol Generator</span></h1>
+        <p class="demo-subtitle">Generate evidence-based health protocols tailored to your biomarkers, goals, and lifestyle for physician review.</p>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">User Profile</span>
+            <div class="status-badge ready" id="proto-status">
+              <span class="status-dot"></span>
+              <span id="proto-status-text">Ready</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="profile-section">
+              <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-info">
+                  <h3 id="profile-name">Michael Chen</h3>
+                  <div class="profile-meta" id="profile-meta">32 years • Male • 175cm • 78kg</div>
+                </div>
+              </div>
+
+              <div class="profile-tags" id="profile-tags">
+                <div class="profile-tag"><span class="tag-icon">🏃</span> Active lifestyle</div>
+                <div class="profile-tag"><span class="tag-icon">😴</span> Sleep issues</div>
+                <div class="profile-tag"><span class="tag-icon">🧠</span> Desk job</div>
+                <div class="profile-tag"><span class="tag-icon">🥗</span> Vegetarian</div>
+              </div>
+
+              <div class="goals-section">
+                <div class="goals-title">Health Goals</div>
+                <div id="goals-list">
+                  <div class="goal-item selected" onclick="toggleGoal(this)">
+                    <div class="goal-checkbox">✓</div>
+                    <span class="goal-text">Improve energy levels</span>
+                  </div>
+                  <div class="goal-item selected" onclick="toggleGoal(this)">
+                    <div class="goal-checkbox">✓</div>
+                    <span class="goal-text">Optimize sleep quality</span>
+                  </div>
+                  <div class="goal-item" onclick="toggleGoal(this)">
+                    <div class="goal-checkbox"></div>
+                    <span class="goal-text">Build muscle mass</span>
+                  </div>
+                  <div class="goal-item" onclick="toggleGoal(this)">
+                    <div class="goal-checkbox"></div>
+                    <span class="goal-text">Reduce inflammation</span>
+                  </div>
+                  <div class="goal-item selected" onclick="toggleGoal(this)">
+                    <div class="goal-checkbox">✓</div>
+                    <span class="goal-text">Boost cognitive function</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Generated Protocol</span>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div class="protocol-preview">
+              <div class="protocol-header">
+                <div class="protocol-title">Personalized Health Protocol</div>
+                <div class="protocol-subtitle">Generated for <span id="proto-user">Michael Chen</span> • <span id="proto-date">--</span></div>
+              </div>
+              <div class="protocol-body" id="protocol-body">
+                <div class="protocol-section">
+                  <div class="protocol-section-title">💊 Supplements</div>
+                  <div class="protocol-item">
+                    <div class="protocol-item-icon supplement">💊</div>
+                    <div class="protocol-item-content">
+                      <div class="protocol-item-name">Awaiting Generation...</div>
+                      <div class="protocol-item-detail">Click "Generate Protocol" to create your personalized plan</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="samples-section">
+        <div class="samples-label">Sample Profiles</div>
+        <div class="samples-grid">
+          <div class="sample-card selected" onclick="selectProtoSample(0, this)">
+            <div class="sample-header">
+              <span class="sample-name">Michael Chen</span>
+              <span class="sample-type">Active</span>
+            </div>
+            <div class="sample-meta">
+              <span>Age: <span>32</span></span>
+              <span>Goals: <span>Energy, Sleep</span></span>
+            </div>
+          </div>
+          <div class="sample-card" onclick="selectProtoSample(1, this)">
+            <div class="sample-header">
+              <span class="sample-name">Sarah Johnson</span>
+              <span class="sample-type">Athlete</span>
+            </div>
+            <div class="sample-meta">
+              <span>Age: <span>28</span></span>
+              <span>Goals: <span>Performance</span></span>
+            </div>
+          </div>
+          <div class="sample-card" onclick="selectProtoSample(2, this)">
+            <div class="sample-header">
+              <span class="sample-name">Robert Williams</span>
+              <span class="sample-type">Senior</span>
+            </div>
+            <div class="sample-meta">
+              <span>Age: <span>58</span></span>
+              <span>Goals: <span>Longevity</span></span>
+            </div>
+          </div>
+          <div class="sample-card" onclick="selectProtoSample(3, this)">
+            <div class="sample-header">
+              <span class="sample-name">Emma Davis</span>
+              <span class="sample-type">Wellness</span>
+            </div>
+            <div class="sample-meta">
+              <span>Age: <span>35</span></span>
+              <span>Goals: <span>Stress, Focus</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <button class="btn" onclick="randomProtoSample()">🔀 Random Profile</button>
+          <button class="btn" onclick="editProfile()">✏️ Edit Profile</button>
+        </div>
+        <div class="control-group">
+          <button class="btn primary" id="generate-proto-btn" onclick="generateProtocol()">⚡ Generate Protocol</button>
+          <button class="btn" id="export-proto-btn" onclick="exportProtocol()" disabled>📄 Export PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================
+         HEALTH INSIGHTS HUB
+         ==================== -->
+    <div class="demo-panel" id="hub">
+      <div class="demo-hero">
+        <div class="demo-badge">📊 Multi-Source Integration</div>
+        <h1 class="demo-title">Health <span class="highlight">Insights Hub</span></h1>
+        <p class="demo-subtitle">Unified view of your health data from labs, wearables, and lifestyle tracking with AI-powered correlation analysis.</p>
+      </div>
+
+      <div class="hub-grid">
+        <div class="data-source-card connected">
+          <div class="data-source-header">
+            <div class="data-source-icon labs">🧪</div>
+            <span class="data-source-status connected">Connected</span>
+          </div>
+          <div class="data-source-name">Lab Results</div>
+          <div class="data-source-desc">Blood panels, metabolic markers, hormones</div>
+          <div class="data-source-metrics">
+            <div class="metric-mini">
+              <div class="metric-mini-label">Last Sync</div>
+              <div class="metric-mini-value">2d ago</div>
+            </div>
+            <div class="metric-mini">
+              <div class="metric-mini-label">Markers</div>
+              <div class="metric-mini-value">47</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-source-card connected">
+          <div class="data-source-header">
+            <div class="data-source-icon wearable">⌚</div>
+            <span class="data-source-status connected">Connected</span>
+          </div>
+          <div class="data-source-name">Apple Watch</div>
+          <div class="data-source-desc">Heart rate, activity, HRV, VO2 max</div>
+          <div class="data-source-metrics">
+            <div class="metric-mini">
+              <div class="metric-mini-label">Avg HR</div>
+              <div class="metric-mini-value">68</div>
+            </div>
+            <div class="metric-mini">
+              <div class="metric-mini-label">HRV</div>
+              <div class="metric-mini-value">52ms</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-source-card connected">
+          <div class="data-source-header">
+            <div class="data-source-icon sleep">😴</div>
+            <span class="data-source-status connected">Connected</span>
+          </div>
+          <div class="data-source-name">Oura Ring</div>
+          <div class="data-source-desc">Sleep stages, readiness, temperature</div>
+          <div class="data-source-metrics">
+            <div class="metric-mini">
+              <div class="metric-mini-label">Sleep Score</div>
+              <div class="metric-mini-value">84</div>
+            </div>
+            <div class="metric-mini">
+              <div class="metric-mini-label">Deep Sleep</div>
+              <div class="metric-mini-value">1h 42m</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="correlation-panel">
+        <div class="correlation-header">
+          <span class="correlation-title">🔗 AI-Detected Correlations</span>
+          <div class="status-badge ready" id="hub-status">
+            <span class="status-dot"></span>
+            <span id="hub-status-text">Ready</span>
+          </div>
+        </div>
+        <div class="correlation-grid" id="correlation-grid">
+          <div class="correlation-item">
+            <div class="correlation-item-header">
+              <span class="correlation-badge strong">Strong</span>
+            </div>
+            <div class="correlation-item-title">Awaiting Analysis</div>
+            <div class="correlation-item-desc">Click "Analyze Correlations" to discover patterns across your health data sources.</div>
+            <div class="correlation-visual">
+              <canvas class="correlation-line" id="corr-canvas-1"></canvas>
+            </div>
+          </div>
+          <div class="correlation-item">
+            <div class="correlation-item-header">
+              <span class="correlation-badge moderate">Moderate</span>
+            </div>
+            <div class="correlation-item-title">Pending Data</div>
+            <div class="correlation-item-desc">More data sources will improve correlation accuracy and insights.</div>
+            <div class="correlation-visual">
+              <canvas class="correlation-line" id="corr-canvas-2"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <button class="btn" onclick="addDataSource()">➕ Add Data Source</button>
+          <button class="btn" onclick="refreshData()">🔄 Refresh Data</button>
+        </div>
+        <div class="control-group">
+          <button class="btn primary" id="analyze-hub-btn" onclick="analyzeCorrelations()">⚡ Analyze Correlations</button>
+          <button class="btn" id="export-hub-btn" onclick="exportInsights()" disabled>📊 Export Insights</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Citation Modal -->
+  <div class="modal-overlay" id="citation-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">📚 Clinical Citation</span>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="citation-content" id="citation-content">
+          <!-- Citation content populated by JS -->
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal()">Close</button>
+        <button class="btn primary" onclick="openPubMed()">🔗 View on PubMed</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Built by <span class="footer-highlight">Sameer M</span> • AI-Powered Preventive Health Intelligence • Demo for Lucis</p>
+  </footer>
+
+  <script>
+    // ====================
+    // State Management
+    // ====================
+    let currentDemo = 'biomarker';
+    let currentBioSample = 0;
+    let currentProtoSample = 0;
+    let currentCitation = null;
+
+    // ====================
+    // Biomarker Data
+    // ====================
+    const bioSamples = [
+      {
+        name: 'Healthy Adult',
+        score: 92,
+        category: 'excellent',
+        summary: 'Excellent overall health profile with optimal biomarker ranges. Minor optimization opportunities in Vitamin D.',
+        biomarkers: [
+          { name: 'Glucose (Fasting)', value: 92, unit: 'mg/dL', range: '70-100', status: 'optimal' },
+          { name: 'HbA1c', value: 5.2, unit: '%', range: '4.0-5.6', status: 'optimal' },
+          { name: 'Total Cholesterol', value: 185, unit: 'mg/dL', range: '125-200', status: 'optimal' },
+          { name: 'HDL Cholesterol', value: 62, unit: 'mg/dL', range: '>40', status: 'optimal' },
+          { name: 'LDL Cholesterol', value: 105, unit: 'mg/dL', range: '<130', status: 'optimal' },
+          { name: 'Triglycerides', value: 95, unit: 'mg/dL', range: '<150', status: 'optimal' },
+          { name: 'Vitamin D', value: 28, unit: 'ng/mL', range: '30-100', status: 'low' },
+          { name: 'Ferritin', value: 85, unit: 'ng/mL', range: '30-300', status: 'optimal' },
+          { name: 'TSH', value: 2.1, unit: 'mIU/L', range: '0.4-4.0', status: 'optimal' },
+          { name: 'Creatinine', value: 0.95, unit: 'mg/dL', range: '0.7-1.3', status: 'optimal' },
+          { name: 'ALT', value: 22, unit: 'U/L', range: '7-56', status: 'optimal' },
+          { name: 'hsCRP', value: 0.8, unit: 'mg/L', range: '<1.0', status: 'optimal' }
+        ],
+        insights: [
+          { type: 'positive', icon: '✅', title: 'Excellent Metabolic Health', desc: 'Glucose and HbA1c indicate optimal insulin sensitivity and blood sugar control.', citation: { source: 'American Diabetes Association', id: 'PMID: 33298423' } },
+          { type: 'positive', icon: '❤️', title: 'Optimal Lipid Profile', desc: 'HDL/LDL ratio of 0.59 suggests low cardiovascular risk. Triglycerides well controlled.', citation: { source: 'Journal of Clinical Lipidology', id: 'PMID: 32854871' } },
+          { type: 'warning', icon: '☀️', title: 'Vitamin D Insufficiency', desc: 'Level of 28 ng/mL is slightly below optimal. Consider 2000-4000 IU daily supplementation.', citation: { source: 'Endocrine Society Guidelines', id: 'PMID: 21646368' } },
+          { type: 'positive', icon: '🛡️', title: 'Low Inflammation', desc: 'hsCRP of 0.8 mg/L indicates minimal systemic inflammation, associated with reduced disease risk.', citation: { source: 'Circulation', id: 'PMID: 14656742' } }
+        ]
+      },
+      {
+        name: 'Pre-Diabetic',
+        score: 68,
+        category: 'moderate',
+        summary: 'Several metabolic markers indicate pre-diabetic state requiring intervention. Lifestyle modifications strongly recommended.',
+        biomarkers: [
+          { name: 'Glucose (Fasting)', value: 118, unit: 'mg/dL', range: '70-100', status: 'high' },
+          { name: 'HbA1c', value: 6.1, unit: '%', range: '4.0-5.6', status: 'high' },
+          { name: 'Total Cholesterol', value: 225, unit: 'mg/dL', range: '125-200', status: 'high' },
+          { name: 'HDL Cholesterol', value: 38, unit: 'mg/dL', range: '>40', status: 'low' },
+          { name: 'LDL Cholesterol', value: 145, unit: 'mg/dL', range: '<130', status: 'high' },
+          { name: 'Triglycerides', value: 210, unit: 'mg/dL', range: '<150', status: 'high' },
+          { name: 'Vitamin D', value: 22, unit: 'ng/mL', range: '30-100', status: 'low' },
+          { name: 'Ferritin', value: 180, unit: 'ng/mL', range: '30-300', status: 'optimal' },
+          { name: 'TSH', value: 3.8, unit: 'mIU/L', range: '0.4-4.0', status: 'optimal' },
+          { name: 'Creatinine', value: 1.1, unit: 'mg/dL', range: '0.7-1.3', status: 'optimal' },
+          { name: 'ALT', value: 48, unit: 'U/L', range: '7-56', status: 'optimal' },
+          { name: 'hsCRP', value: 2.8, unit: 'mg/L', range: '<1.0', status: 'high' }
+        ],
+        insights: [
+          { type: 'critical', icon: '⚠️', title: 'Pre-Diabetic State Detected', desc: 'HbA1c of 6.1% and fasting glucose of 118 mg/dL indicate impaired glucose metabolism. Immediate intervention recommended.', citation: { source: 'American Diabetes Association', id: 'PMID: 33298423' } },
+          { type: 'critical', icon: '💔', title: 'Dyslipidemia Present', desc: 'Elevated LDL, low HDL, and high triglycerides significantly increase cardiovascular risk.', citation: { source: 'ACC/AHA Guidelines', id: 'PMID: 30586774' } },
+          { type: 'warning', icon: '🔥', title: 'Elevated Inflammation', desc: 'hsCRP of 2.8 mg/L suggests chronic low-grade inflammation, often associated with metabolic syndrome.', citation: { source: 'New England Journal of Medicine', id: 'PMID: 18997196' } },
+          { type: 'warning', icon: '☀️', title: 'Vitamin D Deficiency', desc: 'Low vitamin D linked to insulin resistance. Supplementation may improve metabolic markers.', citation: { source: 'Diabetes Care', id: 'PMID: 28885809' } }
+        ]
+      },
+      {
+        name: 'Iron Deficient',
+        score: 74,
+        category: 'moderate',
+        summary: 'Iron deficiency anemia detected with low ferritin and hemoglobin. Investigation and supplementation needed.',
+        biomarkers: [
+          { name: 'Glucose (Fasting)', value: 88, unit: 'mg/dL', range: '70-100', status: 'optimal' },
+          { name: 'HbA1c', value: 5.0, unit: '%', range: '4.0-5.6', status: 'optimal' },
+          { name: 'Total Cholesterol', value: 172, unit: 'mg/dL', range: '125-200', status: 'optimal' },
+          { name: 'HDL Cholesterol', value: 58, unit: 'mg/dL', range: '>40', status: 'optimal' },
+          { name: 'LDL Cholesterol', value: 98, unit: 'mg/dL', range: '<130', status: 'optimal' },
+          { name: 'Triglycerides', value: 80, unit: 'mg/dL', range: '<150', status: 'optimal' },
+          { name: 'Vitamin D', value: 35, unit: 'ng/mL', range: '30-100', status: 'optimal' },
+          { name: 'Ferritin', value: 12, unit: 'ng/mL', range: '30-300', status: 'low' },
+          { name: 'Hemoglobin', value: 10.8, unit: 'g/dL', range: '12-16', status: 'low' },
+          { name: 'TSH', value: 2.5, unit: 'mIU/L', range: '0.4-4.0', status: 'optimal' },
+          { name: 'ALT', value: 18, unit: 'U/L', range: '7-56', status: 'optimal' },
+          { name: 'Vitamin B12', value: 280, unit: 'pg/mL', range: '200-900', status: 'optimal' }
+        ],
+        insights: [
+          { type: 'critical', icon: '🩸', title: 'Iron Deficiency Anemia', desc: 'Ferritin of 12 ng/mL with hemoglobin 10.8 g/dL indicates iron deficiency anemia. Common in menstruating women.', citation: { source: 'Blood', id: 'PMID: 28432850' } },
+          { type: 'warning', icon: '⚡', title: 'Energy Impact Expected', desc: 'Low iron levels commonly cause fatigue, weakness, and decreased exercise tolerance.', citation: { source: 'American Journal of Medicine', id: 'PMID: 24388669' } },
+          { type: 'positive', icon: '❤️', title: 'Cardiovascular Markers Optimal', desc: 'Excellent lipid profile with low cardiovascular risk factors.', citation: { source: 'Journal of Clinical Lipidology', id: 'PMID: 32854871' } },
+          { type: 'positive', icon: '🧬', title: 'Metabolic Health Good', desc: 'Glucose metabolism is well-regulated despite anemia.', citation: { source: 'American Diabetes Association', id: 'PMID: 33298423' } }
+        ]
+      },
+      {
+        name: 'Athlete Profile',
+        score: 95,
+        category: 'excellent',
+        summary: 'Elite health profile consistent with high-level athletic training. Excellent markers across all categories.',
+        biomarkers: [
+          { name: 'Glucose (Fasting)', value: 82, unit: 'mg/dL', range: '70-100', status: 'optimal' },
+          { name: 'HbA1c', value: 4.8, unit: '%', range: '4.0-5.6', status: 'optimal' },
+          { name: 'Total Cholesterol', value: 165, unit: 'mg/dL', range: '125-200', status: 'optimal' },
+          { name: 'HDL Cholesterol', value: 78, unit: 'mg/dL', range: '>40', status: 'optimal' },
+          { name: 'LDL Cholesterol', value: 75, unit: 'mg/dL', range: '<130', status: 'optimal' },
+          { name: 'Triglycerides', value: 60, unit: 'mg/dL', range: '<150', status: 'optimal' },
+          { name: 'Vitamin D', value: 55, unit: 'ng/mL', range: '30-100', status: 'optimal' },
+          { name: 'Ferritin', value: 120, unit: 'ng/mL', range: '30-300', status: 'optimal' },
+          { name: 'TSH', value: 1.8, unit: 'mIU/L', range: '0.4-4.0', status: 'optimal' },
+          { name: 'Creatinine', value: 1.15, unit: 'mg/dL', range: '0.7-1.3', status: 'optimal' },
+          { name: 'CK (Creatine Kinase)', value: 280, unit: 'U/L', range: '30-200', status: 'high' },
+          { name: 'hsCRP', value: 0.4, unit: 'mg/L', range: '<1.0', status: 'optimal' }
+        ],
+        insights: [
+          { type: 'positive', icon: '🏆', title: 'Elite Metabolic Fitness', desc: 'Exceptional insulin sensitivity with fasting glucose of 82 mg/dL and HbA1c of 4.8%.', citation: { source: 'Sports Medicine', id: 'PMID: 30975384' } },
+          { type: 'positive', icon: '❤️', title: 'Superior Cardiovascular Profile', desc: 'HDL of 78 mg/dL is exceptional. HDL/LDL ratio of 1.04 indicates very low cardiovascular risk.', citation: { source: 'Circulation', id: 'PMID: 30586774' } },
+          { type: 'positive', icon: '☀️', title: 'Optimal Vitamin D', desc: 'Level of 55 ng/mL supports athletic performance, bone health, and immune function.', citation: { source: 'Journal of Sports Sciences', id: 'PMID: 28233512' } },
+          { type: 'warning', icon: '💪', title: 'Elevated CK (Expected)', desc: 'CK of 280 U/L is elevated but consistent with regular intense training. Monitor for overtraining.', citation: { source: 'British Journal of Sports Medicine', id: 'PMID: 25370228' } }
+        ]
+      }
+    ];
+
+    // ====================
+    // Protocol Data
+    // ====================
+    const protoSamples = [
+      {
+        name: 'Michael Chen',
+        meta: '32 years • Male • 175cm • 78kg',
+        tags: ['🏃 Active lifestyle', '😴 Sleep issues', '🧠 Desk job', '🥗 Vegetarian'],
+        goals: ['Improve energy levels', 'Optimize sleep quality', 'Boost cognitive function'],
+        protocol: {
+          supplements: [
+            { name: 'Vitamin D3 + K2', detail: '4000 IU D3 + 100mcg K2 daily with fat-containing meal', timing: 'Morning', evidence: '★★★★★' },
+            { name: 'Magnesium Glycinate', detail: '400mg before bed for sleep quality and muscle recovery', timing: 'Evening', evidence: '★★★★☆' },
+            { name: 'Omega-3 (EPA/DHA)', detail: '2g combined EPA/DHA for cognitive function and inflammation', timing: 'With meals', evidence: '★★★★★' },
+            { name: 'B-Complex', detail: 'Methylated B-vitamins for energy metabolism (vegetarian essential)', timing: 'Morning', evidence: '★★★★☆' }
+          ],
+          nutrition: [
+            { name: 'Increase Protein Intake', detail: 'Target 1.6g/kg body weight (125g/day) from plant sources', timing: 'Daily', evidence: '★★★★★' },
+            { name: 'Iron-Rich Foods', detail: 'Pair iron sources (lentils, spinach) with vitamin C for absorption', timing: 'Daily', evidence: '★★★★☆' }
+          ],
+          lifestyle: [
+            { name: 'Sleep Hygiene Protocol', detail: 'No screens 1hr before bed, bedroom temp 65-68°F, consistent schedule', timing: 'Nightly', evidence: '★★★★★' },
+            { name: 'Morning Light Exposure', detail: '10-15 min bright light within 30 min of waking for circadian rhythm', timing: 'Morning', evidence: '★★★★☆' }
+          ],
+          monitoring: [
+            { name: 'Retest Vitamin D', detail: 'Check 25(OH)D levels after 3 months of supplementation', timing: '3 months', evidence: '★★★★★' },
+            { name: 'Sleep Quality Tracking', detail: 'Use wearable to monitor deep sleep and sleep efficiency trends', timing: 'Ongoing', evidence: '★★★☆☆' }
+          ]
+        }
+      },
+      {
+        name: 'Sarah Johnson',
+        meta: '28 years • Female • 168cm • 62kg',
+        tags: ['🏋️ Competitive athlete', '🏃‍♀️ Marathon runner', '🥩 High protein', '💪 Performance focus'],
+        goals: ['Maximize endurance', 'Optimize recovery', 'Prevent injury'],
+        protocol: {
+          supplements: [
+            { name: 'Creatine Monohydrate', detail: '5g daily for power output and cognitive function', timing: 'Any time', evidence: '★★★★★' },
+            { name: 'Beta-Alanine', detail: '3.2g daily for endurance and lactate buffering', timing: 'Pre-workout', evidence: '★★★★☆' },
+            { name: 'Tart Cherry Extract', detail: '480mg daily for recovery and inflammation reduction', timing: 'Post-workout', evidence: '★★★★☆' },
+            { name: 'Electrolyte Complex', detail: 'Sodium, potassium, magnesium for hydration during long runs', timing: 'During exercise', evidence: '★★★★★' }
+          ],
+          nutrition: [
+            { name: 'Carbohydrate Periodization', detail: 'Higher carbs on training days, moderate on rest days', timing: 'Daily', evidence: '★★★★☆' },
+            { name: 'Protein Timing', detail: '30-40g protein within 2 hours post-training for muscle synthesis', timing: 'Post-workout', evidence: '★★★★★' }
+          ],
+          lifestyle: [
+            { name: 'Sleep Priority', detail: '8-9 hours sleep for optimal recovery and adaptation', timing: 'Nightly', evidence: '★★★★★' },
+            { name: 'Active Recovery', detail: 'Low-intensity movement on rest days to promote blood flow', timing: '2x weekly', evidence: '★★★★☆' }
+          ],
+          monitoring: [
+            { name: 'HRV Tracking', detail: 'Monitor heart rate variability to guide training intensity', timing: 'Daily', evidence: '★★★★☆' },
+            { name: 'Ferritin Levels', detail: 'Check iron stores quarterly (runners at higher risk of deficiency)', timing: '3 months', evidence: '★★★★★' }
+          ]
+        }
+      },
+      {
+        name: 'Robert Williams',
+        meta: '58 years • Male • 180cm • 88kg',
+        tags: ['🧓 Longevity focus', '💊 On statins', '🚶 Moderate activity', '🧠 Cognitive health'],
+        goals: ['Healthy aging', 'Cardiovascular protection', 'Cognitive preservation'],
+        protocol: {
+          supplements: [
+            { name: 'CoQ10 (Ubiquinol)', detail: '200mg daily - essential with statin use for energy and heart health', timing: 'Morning', evidence: '★★★★★' },
+            { name: 'Omega-3 Fish Oil', detail: '3g EPA/DHA for cardiovascular and cognitive support', timing: 'With meals', evidence: '★★★★★' },
+            { name: 'Vitamin D3', detail: '3000 IU daily for bone density and immune function', timing: 'Morning', evidence: '★★★★★' },
+            { name: 'Curcumin (with Piperine)', detail: '500mg for anti-inflammatory and neuroprotective effects', timing: 'With meals', evidence: '★★★★☆' }
+          ],
+          nutrition: [
+            { name: 'Mediterranean Diet Pattern', detail: 'Emphasize olive oil, fish, vegetables, and whole grains', timing: 'Daily', evidence: '★★★★★' },
+            { name: 'Limit Processed Foods', detail: 'Reduce sodium and refined carbohydrates for blood pressure', timing: 'Daily', evidence: '★★★★★' }
+          ],
+          lifestyle: [
+            { name: 'Resistance Training', detail: '2-3x weekly strength training to preserve muscle mass', timing: 'Weekly', evidence: '★★★★★' },
+            { name: 'Cognitive Engagement', detail: 'Daily learning activities, puzzles, or new skill development', timing: 'Daily', evidence: '★★★★☆' }
+          ],
+          monitoring: [
+            { name: 'Lipid Panel', detail: 'Monitor LDL, HDL, and triglycerides every 6 months', timing: '6 months', evidence: '★★★★★' },
+            { name: 'Cognitive Assessment', detail: 'Annual cognitive screening for early detection', timing: 'Annually', evidence: '★★★★☆' }
+          ]
+        }
+      },
+      {
+        name: 'Emma Davis',
+        meta: '35 years • Female • 165cm • 58kg',
+        tags: ['💼 High-stress job', '🧘 Yoga practitioner', '🌱 Plant-forward', '😰 Anxiety tendency'],
+        goals: ['Stress management', 'Focus and productivity', 'Hormonal balance'],
+        protocol: {
+          supplements: [
+            { name: 'Ashwagandha (KSM-66)', detail: '600mg daily for cortisol regulation and stress resilience', timing: 'Evening', evidence: '★★★★☆' },
+            { name: 'L-Theanine', detail: '200mg for calm focus without drowsiness', timing: 'As needed', evidence: '★★★★☆' },
+            { name: 'Magnesium Threonate', detail: '144mg elemental Mg for cognitive function and anxiety', timing: 'Evening', evidence: '★★★★☆' },
+            { name: 'Rhodiola Rosea', detail: '400mg for mental fatigue and adaptogenic support', timing: 'Morning', evidence: '★★★★☆' }
+          ],
+          nutrition: [
+            { name: 'Blood Sugar Stability', detail: 'Balanced meals with protein, fat, and fiber to prevent crashes', timing: 'Every meal', evidence: '★★★★★' },
+            { name: 'Limit Caffeine', detail: 'Max 200mg before noon to protect sleep and reduce anxiety', timing: 'Morning only', evidence: '★★★★☆' }
+          ],
+          lifestyle: [
+            { name: 'Morning Meditation', detail: '10-20 min mindfulness practice for stress resilience', timing: 'Daily', evidence: '★★★★★' },
+            { name: 'Nature Exposure', detail: '20+ min outdoor time daily for cortisol reduction', timing: 'Daily', evidence: '★★★★☆' }
+          ],
+          monitoring: [
+            { name: 'Cortisol Rhythm', detail: 'Consider 4-point salivary cortisol test if symptoms persist', timing: 'If needed', evidence: '★★★★☆' },
+            { name: 'Thyroid Panel', detail: 'Full thyroid panel including antibodies (stress can affect thyroid)', timing: 'Annually', evidence: '★★★★★' }
+          ]
+        }
+      }
+    ];
+
+    // ====================
+    // Correlation Data
+    // ====================
+    const correlationData = [
+      { badge: 'strong', title: 'Sleep ↔ HRV Connection', desc: 'Your deep sleep duration shows 0.82 correlation with next-day HRV. Nights with >1.5hr deep sleep predict HRV above 50ms.' },
+      { badge: 'strong', title: 'Glucose ↔ Sleep Quality', desc: 'Late eating (after 8 PM) correlates with 12% higher morning glucose readings and reduced sleep efficiency.' },
+      { badge: 'moderate', title: 'Exercise ↔ Inflammation', desc: 'Days with 30+ min moderate activity show lower hsCRP trending over 6-week periods.' },
+      { badge: 'moderate', title: 'Stress ↔ Recovery', desc: 'High-stress days (detected via HRV dips) correlate with 18% longer recovery times.' }
+    ];
+
+    // ====================
+    // Navigation
+    // ====================
+    function switchDemo(demo, btn) {
+      currentDemo = demo;
+      
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      
+      document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(demo).classList.add('active');
+      
+      if (demo === 'biomarker') {
+        renderBiomarkers(bioSamples[currentBioSample]);
+      }
+    }
+
+    // ====================
+    // Biomarker Functions
+    // ====================
+    function selectBioSample(index, el) {
+      currentBioSample = index;
+      document.querySelectorAll('#biomarker .sample-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      resetBioAnalysis();
+      renderBiomarkers(bioSamples[index]);
+    }
+
+    function randomBioSample() {
+      const index = Math.floor(Math.random() * bioSamples.length);
+      const card = document.querySelectorAll('#biomarker .sample-card')[index];
+      selectBioSample(index, card);
+    }
+
+    function renderBiomarkers(sample) {
+      const grid = document.getElementById('biomarker-grid');
+      grid.innerHTML = sample.biomarkers.map(b => `
+        <div class="biomarker-item ${b.status}">
+          <div class="biomarker-label">${b.name}</div>
+          <div class="biomarker-value-row">
+            <span class="biomarker-value">${b.value}</span>
+            <span class="biomarker-unit">${b.unit}</span>
+          </div>
+          <div class="biomarker-range">Ref: ${b.range}</div>
+          <div class="biomarker-status ${b.status}">${b.status === 'optimal' ? '✓ Optimal' : b.status === 'high' ? '↑ High' : '↓ Low'}</div>
+        </div>
+      `).join('');
+    }
+
+    function resetBioAnalysis() {
+      document.getElementById('health-score').textContent = '--';
+      document.getElementById('score-category').textContent = '--';
+      document.getElementById('score-category').className = 'score-category';
+      document.getElementById('score-summary').textContent = 'Run analysis to generate your personalized health score';
+      document.getElementById('health-score-ring').style.strokeDashoffset = '339';
+      document.getElementById('insights-list').innerHTML = `
+        <div class="insight-item">
+          <div class="insight-icon" style="background: var(--bg-card);">💡</div>
+          <div class="insight-content">
+            <div class="insight-title">Awaiting Analysis</div>
+            <div class="insight-desc">Click "Analyze Panel" to generate AI-powered insights with clinical citations.</div>
+          </div>
+        </div>
+      `;
+      document.getElementById('export-bio-btn').disabled = true;
+      document.getElementById('bio-status-text').textContent = 'Ready';
+    }
+
+    async function analyzeBiomarkers() {
+      const btn = document.getElementById('analyze-bio-btn');
+      btn.disabled = true;
+      btn.innerHTML = '⟳ Analyzing...';
+      document.getElementById('bio-status-text').textContent = 'Processing...';
+      document.getElementById('bio-status').className = 'status-badge processing';
+      
+      const sample = bioSamples[currentBioSample];
+      
+      await sleep(1000);
+      
+      // Update score ring
+      const circumference = 339;
+      const offset = circumference - (sample.score / 100) * circumference;
+      const ring = document.getElementById('health-score-ring');
+      ring.style.strokeDashoffset = offset;
+      ring.className = `score-ring-fill ${sample.category}`;
+      
+      animateNumber('health-score', 0, sample.score, 1000);
+      
+      await sleep(500);
+      
+      document.getElementById('score-category').textContent = sample.category.charAt(0).toUpperCase() + sample.category.slice(1);
+      document.getElementById('score-category').className = `score-category ${sample.category}`;
+      document.getElementById('score-summary').textContent = sample.summary;
+      
+      // Render insights
+      const insightsList = document.getElementById('insights-list');
+      insightsList.innerHTML = '';
+      
+      for (let i = 0; i < sample.insights.length; i++) {
+        await sleep(200);
+        const insight = sample.insights[i];
+        insightsList.innerHTML += `
+          <div class="insight-item ${insight.type}" style="animation: fadeSlideIn 0.3s ease">
+            <div class="insight-icon ${insight.type}">${insight.icon}</div>
+            <div class="insight-content">
+              <div class="insight-title">${insight.title}</div>
+              <div class="insight-desc">${insight.desc}</div>
+              <div class="insight-citation" onclick="showCitation('${insight.citation.source}', '${insight.citation.id}')">
+                📚 ${insight.citation.id}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      document.getElementById('export-bio-btn').disabled = false;
+      document.getElementById('bio-status-text').textContent = 'Complete';
+      document.getElementById('bio-status').className = 'status-badge ready';
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Analyze Panel';
+    }
+
+    function showCitation(source, id) {
+      currentCitation = { source, id };
+      const content = document.getElementById('citation-content');
+      content.innerHTML = `
+        <div class="citation-source">${source}</div>
+        <div class="citation-authors">Reference ID: ${id}</div>
+        <div class="citation-abstract">
+          This recommendation is based on peer-reviewed clinical research and established medical guidelines. 
+          The evidence supports the interpretation provided in the analysis with high confidence.
+        </div>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/?term=${id.replace('PMID: ', '')}" target="_blank" class="citation-link">
+          🔗 View on PubMed →
+        </a>
+      `;
+      document.getElementById('citation-modal').classList.add('visible');
+    }
+
+    // ====================
+    // Protocol Functions
+    // ====================
+    function selectProtoSample(index, el) {
+      currentProtoSample = index;
+      document.querySelectorAll('#protocol .sample-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      renderProfile(protoSamples[index]);
+      resetProtocol();
+    }
+
+    function randomProtoSample() {
+      const index = Math.floor(Math.random() * protoSamples.length);
+      const card = document.querySelectorAll('#protocol .sample-card')[index];
+      selectProtoSample(index, card);
+    }
+
+    function renderProfile(sample) {
+      document.getElementById('profile-name').textContent = sample.name;
+      document.getElementById('profile-meta').textContent = sample.meta;
+      document.getElementById('profile-tags').innerHTML = sample.tags.map(t => 
+        `<div class="profile-tag"><span class="tag-icon">${t.split(' ')[0]}</span>${t.split(' ').slice(1).join(' ')}</div>`
+      ).join('');
+      
+      const goalsList = document.getElementById('goals-list');
+      goalsList.innerHTML = sample.goals.map((g, i) => `
+        <div class="goal-item ${i < 3 ? 'selected' : ''}" onclick="toggleGoal(this)">
+          <div class="goal-checkbox">${i < 3 ? '✓' : ''}</div>
+          <span class="goal-text">${g}</span>
+        </div>
+      `).join('');
+    }
+
+    function toggleGoal(el) {
+      el.classList.toggle('selected');
+      const checkbox = el.querySelector('.goal-checkbox');
+      checkbox.textContent = el.classList.contains('selected') ? '✓' : '';
+    }
+
+    function resetProtocol() {
+      document.getElementById('proto-date').textContent = '--';
+      document.getElementById('protocol-body').innerHTML = `
+        <div class="protocol-section">
+          <div class="protocol-section-title">💊 Supplements</div>
+          <div class="protocol-item">
+            <div class="protocol-item-icon supplement">💊</div>
+            <div class="protocol-item-content">
+              <div class="protocol-item-name">Awaiting Generation...</div>
+              <div class="protocol-item-detail">Click "Generate Protocol" to create your personalized plan</div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('export-proto-btn').disabled = true;
+      document.getElementById('proto-status-text').textContent = 'Ready';
+    }
+
+    async function generateProtocol() {
+      const btn = document.getElementById('generate-proto-btn');
+      btn.disabled = true;
+      btn.innerHTML = '⟳ Generating...';
+      document.getElementById('proto-status-text').textContent = 'Processing...';
+      document.getElementById('proto-status').className = 'status-badge processing';
+      
+      const sample = protoSamples[currentProtoSample];
+      document.getElementById('proto-user').textContent = sample.name;
+      document.getElementById('proto-date').textContent = new Date().toLocaleDateString();
+      
+      await sleep(800);
+      
+      const body = document.getElementById('protocol-body');
+      body.innerHTML = '';
+      
+      const sections = [
+        { key: 'supplements', icon: '💊', title: 'Supplements', iconClass: 'supplement' },
+        { key: 'nutrition', icon: '🥗', title: 'Nutrition', iconClass: 'nutrition' },
+        { key: 'lifestyle', icon: '🏃', title: 'Lifestyle', iconClass: 'lifestyle' },
+        { key: 'monitoring', icon: '📊', title: 'Monitoring', iconClass: 'monitoring' }
+      ];
+      
+      for (const section of sections) {
+        await sleep(300);
+        
+        const items = sample.protocol[section.key];
+        const sectionHtml = `
+          <div class="protocol-section" style="animation: fadeSlideIn 0.3s ease">
+            <div class="protocol-section-title">${section.icon} ${section.title}</div>
+            ${items.map(item => `
+              <div class="protocol-item">
+                <div class="protocol-item-icon ${section.iconClass}">${section.icon}</div>
+                <div class="protocol-item-content">
+                  <div class="protocol-item-name">${item.name}</div>
+                  <div class="protocol-item-detail">${item.detail}</div>
+                  <div class="protocol-item-meta">
+                    <span class="protocol-meta-tag">⏰ ${item.timing}</span>
+                    <span class="protocol-evidence">Evidence: ${item.evidence}</span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        body.innerHTML += sectionHtml;
+      }
+      
+      document.getElementById('export-proto-btn').disabled = false;
+      document.getElementById('proto-status-text').textContent = 'Complete';
+      document.getElementById('proto-status').className = 'status-badge ready';
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Generate Protocol';
+    }
+
+    // ====================
+    // Hub Functions
+    // ====================
+    async function analyzeCorrelations() {
+      const btn = document.getElementById('analyze-hub-btn');
+      btn.disabled = true;
+      btn.innerHTML = '⟳ Analyzing...';
+      document.getElementById('hub-status-text').textContent = 'Processing...';
+      document.getElementById('hub-status').className = 'status-badge processing';
+      
+      await sleep(1200);
+      
+      const grid = document.getElementById('correlation-grid');
+      grid.innerHTML = '';
+      
+      for (let i = 0; i < correlationData.length; i++) {
+        await sleep(250);
+        const corr = correlationData[i];
+        grid.innerHTML += `
+          <div class="correlation-item" style="animation: fadeSlideIn 0.3s ease">
+            <div class="correlation-item-header">
+              <span class="correlation-badge ${corr.badge}">${corr.badge}</span>
+            </div>
+            <div class="correlation-item-title">${corr.title}</div>
+            <div class="correlation-item-desc">${corr.desc}</div>
+            <div class="correlation-visual">
+              <canvas class="correlation-line" id="corr-canvas-${i}"></canvas>
+            </div>
+          </div>
+        `;
+        
+        // Draw mini chart
+        setTimeout(() => drawMiniChart(`corr-canvas-${i}`, corr.badge === 'strong'), 100);
+      }
+      
+      document.getElementById('export-hub-btn').disabled = false;
+      document.getElementById('hub-status-text').textContent = 'Complete';
+      document.getElementById('hub-status').className = 'status-badge ready';
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Analyze Correlations';
+    }
+
+    function drawMiniChart(canvasId, isStrong) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth * 2;
+      canvas.height = canvas.offsetHeight * 2;
+      ctx.scale(2, 2);
+      
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      
+      // Draw trend line
+      ctx.strokeStyle = isStrong ? '#10b981' : '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      const points = isStrong ? [35, 28, 32, 20, 15, 18, 10] : [30, 25, 28, 22, 26, 20, 18];
+      points.forEach((p, i) => {
+        const x = (i / (points.length - 1)) * w;
+        const y = (p / 40) * h;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    }
+
+    // ====================
+    // Utility Functions
+    // ====================
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function animateNumber(elementId, start, end, duration) {
+      const el = document.getElementById(elementId);
+      const range = end - start;
+      const startTime = performance.now();
+      
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + range * eased);
+        el.textContent = current;
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+      
+      requestAnimationFrame(update);
+    }
+
+    function closeModal() {
+      document.getElementById('citation-modal').classList.remove('visible');
+    }
+
+    function openPubMed() {
+      if (currentCitation) {
+        window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${currentCitation.id.replace('PMID: ', '')}`, '_blank');
+      }
+      closeModal();
+    }
+
+    function showUploadModal() {
+      alert('Upload Feature\n\nIn production, this would allow users to:\n• Upload lab PDF results\n• Connect to lab portals (Quest, LabCorp)\n• Manual entry of biomarker values');
+    }
+
+    function editProfile() {
+      alert('Profile Editor\n\nIn production, this would allow users to:\n• Edit demographics and health history\n• Update dietary preferences\n• Modify health goals');
+    }
+
+    function addDataSource() {
+      alert('Add Data Source\n\nAvailable integrations:\n• Garmin Connect\n• Fitbit\n• Whoop\n• Apple Health\n• Google Fit\n• MyFitnessPal\n• Cronometer');
+    }
+
+    function refreshData() {
+      alert('Syncing data from all connected sources...');
+    }
+
+    function exportAnalysis() {
+      alert('Exporting comprehensive biomarker analysis report as PDF...');
+    }
+
+    function exportProtocol() {
+      alert('Exporting personalized protocol as PDF for physician review...');
+    }
+
+    function exportInsights() {
+      alert('Exporting health insights and correlations report...');
+    }
+
+    // ====================
+    // Initialize
+    // ====================
+    window.addEventListener('load', () => {
+      renderBiomarkers(bioSamples[0]);
+      renderProfile(protoSamples[0]);
+    });
+  </script>
+</body>
+</html>
